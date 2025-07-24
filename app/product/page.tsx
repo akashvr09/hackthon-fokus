@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Grid, List, Search, Filter, ChevronDown, Star, Heart, ShoppingCart } from "lucide-react"
 import { NavBar } from "@/components/nav-bar"
 import { Footer } from "@/components/footer"
-import { AnimatedButton } from "@/components/animated-button"
 import { FruitAnimations } from "@/components/fruit-animations"
 
 // Define our 3-color palette
@@ -254,113 +253,344 @@ export default function ProductsPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              {filteredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  className={`group relative bg-white border border-gray-200 rounded-3xl overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-500 ${
-                    viewMode === "list" ? "flex items-center" : ""
-                  }`}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.8 }}
-                  whileHover={{ y: -10, scale: 1.02 }}
-                >
-                  {/* Badge */}
+              {filteredProducts.map((product, index) => {
+                // Extract color theme from gradient for dynamic theming
+                const colorTheme = product.gradient.includes("amber")
+                  ? "amber"
+                  : product.gradient.includes("emerald")
+                    ? "emerald"
+                    : "indigo"
+
+                return (
                   <motion.div
-                    className={`absolute top-4 left-4 z-10 bg-gradient-to-r from-${colors.primary} to-${colors.secondary} text-white px-3 py-1 rounded-full text-sm font-semibold`}
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
+                    key={product.id}
+                    className={`group relative bg-white border border-gray-200 rounded-3xl overflow-hidden transition-all duration-700 ${
+                      viewMode === "list" ? "flex items-center" : ""
+                    }`}
+                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 + 0.3, type: "spring" }}
+                    transition={{
+                      delay: index * 0.15,
+                      duration: 0.8,
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 15,
+                    }}
+                    whileHover={{
+                      y: -15,
+                      scale: 1.03,
+                      rotateY: 5,
+                      rotateX: 5,
+                      transition: { duration: 0.4, ease: "easeOut" },
+                    }}
+                    style={{
+                      transformStyle: "preserve-3d",
+                      perspective: "1000px",
+                    }}
                   >
-                    {product.badge}
-                  </motion.div>
-
-                  {/* Wishlist Button */}
-                  <motion.button
-                    className="absolute top-4 right-4 z-10 p-2 bg-gray-100 rounded-full border border-gray-200 hover:bg-gray-200 transition-colors"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Heart className="w-5 h-5 text-gray-600" />
-                  </motion.button>
-
-                  {/* Product Image */}
-                  <div className={`relative p-8 ${viewMode === "list" ? "w-1/3" : ""}`}>
+                    {/* Animated Glow Background */}
                     <motion.div
-                      className="relative mx-auto w-32 h-48 flex items-center justify-center"
-                      whileHover={{ scale: 1.1, rotateY: 15 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <img
-                        src={product.image || "/placeholder.svg"}
-                        alt={product.title}
-                        className="w-full h-full object-contain"
-                      />
+                      className={`absolute inset-0 bg-gradient-to-br from-${colorTheme}-100 via-${colorTheme}-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
+                      initial={false}
+                      animate={{
+                        background: [
+                          `linear-gradient(45deg, rgb(var(--${colorTheme}-100)), rgb(var(--${colorTheme}-50)), white)`,
+                          `linear-gradient(135deg, rgb(var(--${colorTheme}-100)), rgb(var(--${colorTheme}-50)), white)`,
+                          `linear-gradient(225deg, rgb(var(--${colorTheme}-100)), rgb(var(--${colorTheme}-50)), white)`,
+                          `linear-gradient(315deg, rgb(var(--${colorTheme}-100)), rgb(var(--${colorTheme}-50)), white)`,
+                        ],
+                      }}
+                      transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                    />
 
-                      {/* Glow Effect */}
-                      <motion.div
-                        className={`absolute inset-0 bg-gradient-to-b ${product.gradient} blur-xl opacity-30 -z-10`}
-                        animate={{
-                          scale: [1, 1.2, 1],
-                          opacity: [0.3, 0.6, 0.3],
-                        }}
-                        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                      />
+                    {/* Outer Glow Effect */}
+                    <motion.div
+                      className={`absolute -inset-1 bg-gradient-to-r from-${colorTheme}-400 via-${colorTheme}-300 to-${colorTheme}-400 rounded-3xl opacity-0 group-hover:opacity-30 blur-xl transition-all duration-700`}
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0, 0.3, 0],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: "easeInOut",
+                        delay: index * 0.2,
+                      }}
+                    />
+
+                    {/* Floating Particles */}
+                    <motion.div
+                      className={`absolute top-4 right-8 w-2 h-2 bg-${colorTheme}-400 rounded-full opacity-0 group-hover:opacity-70`}
+                      animate={{
+                        y: [0, -20, 0],
+                        x: [0, 10, 0],
+                        scale: [1, 1.5, 1],
+                        opacity: [0.7, 1, 0.7],
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: "easeInOut",
+                        delay: 0.5,
+                      }}
+                    />
+
+                    <motion.div
+                      className={`absolute bottom-8 left-6 w-1.5 h-1.5 bg-${colorTheme}-300 rounded-full opacity-0 group-hover:opacity-60`}
+                      animate={{
+                        y: [0, -15, 0],
+                        x: [0, -8, 0],
+                        scale: [1, 2, 1],
+                        opacity: [0.6, 0.9, 0.6],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: "easeInOut",
+                        delay: 1,
+                      }}
+                    />
+
+                    {/* Enhanced Border Animation */}
+                    <motion.div
+                      className={`absolute inset-0 rounded-3xl border-2 border-${colorTheme}-300 opacity-0 group-hover:opacity-50`}
+                      animate={{
+                        borderColor: [
+                          `rgb(var(--${colorTheme}-300))`,
+                          `rgb(var(--${colorTheme}-400))`,
+                          `rgb(var(--${colorTheme}-500))`,
+                          `rgb(var(--${colorTheme}-400))`,
+                          `rgb(var(--${colorTheme}-300))`,
+                        ],
+                      }}
+                      transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                    />
+
+                    {/* Badge with enhanced animation */}
+                    <motion.div
+                      className={`absolute top-4 left-4 z-10 bg-gradient-to-r from-${colorTheme}-500 to-${colorTheme}-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg`}
+                      initial={{ scale: 0, rotate: -180 }}
+                      whileInView={{ scale: 1, rotate: 0 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        delay: index * 0.1 + 0.3,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 10,
+                      }}
+                      whileHover={{
+                        scale: 1.1,
+                        rotate: 5,
+                        boxShadow: `0 10px 25px rgba(var(--${colorTheme}-500), 0.4)`,
+                      }}
+                    >
+                      {product.badge}
                     </motion.div>
-                  </div>
 
-                  {/* Product Info */}
-                  <div className={`p-6 ${viewMode === "list" ? "w-2/3" : ""}`}>
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm text-gray-500">({product.reviews})</span>
-                    </div>
-
-                    <h3
-                      className={`text-xl font-bold text-gray-800 mb-2 group-hover:text-${colors.primary} transition-colors`}
+                    {/* Enhanced Wishlist Button */}
+                    <motion.button
+                      className={`absolute top-4 right-4 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 hover:bg-${colorTheme}-50 hover:border-${colorTheme}-300 transition-all duration-300 shadow-md`}
+                      whileHover={{
+                        scale: 1.15,
+                        rotate: 15,
+                        boxShadow: `0 8px 20px rgba(var(--${colorTheme}-400), 0.3)`,
+                      }}
+                      whileTap={{ scale: 0.9, rotate: -5 }}
+                      animate={{
+                        y: [0, -2, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: "easeInOut",
+                        delay: index * 0.3,
+                      }}
                     >
-                      {product.title}
-                    </h3>
+                      <Heart
+                        className={`w-5 h-5 text-gray-600 group-hover:text-${colorTheme}-500 transition-colors duration-300`}
+                      />
+                    </motion.button>
 
-                    <p className="text-sm text-gray-600 mb-4">{product.flavor} • 400ml</p>
-
-                    <div className="flex items-center gap-2 mb-6">
-                      <span className={`text-2xl font-black text-${colors.secondary}`}>{product.price}</span>
-                      <span className="text-lg text-white/40 line-through">{product.originalPrice}</span>
-                      <span
-                        className={`text-sm bg-${colors.secondary}/20 text-${colors.secondary} px-2 py-1 rounded-full font-semibold`}
+                    {/* Enhanced Product Image with 3D effect */}
+                    <div className={`relative p-8 ${viewMode === "list" ? "w-1/3" : ""}`}>
+                      <motion.div
+                        className="relative mx-auto w-32 h-48 flex items-center justify-center"
+                        whileHover={{
+                          scale: 1.15,
+                          rotateY: 20,
+                          rotateX: 10,
+                          z: 50,
+                        }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        style={{ transformStyle: "preserve-3d" }}
                       >
-                        17% OFF
-                      </span>
+                        <motion.img
+                          src={product.image || "/placeholder.svg"}
+                          alt={product.title}
+                          className="w-full h-full object-contain relative z-10"
+                          whileHover={{ filter: "brightness(1.1) contrast(1.1)" }}
+                        />
+
+                        {/* Enhanced Glow Effect */}
+                        <motion.div
+                          className={`absolute inset-0 bg-gradient-to-b from-${colorTheme}-400 to-${colorTheme}-600 blur-2xl opacity-20 group-hover:opacity-60 -z-10`}
+                          animate={{
+                            scale: [1, 1.3, 1.1, 1.4, 1],
+                            opacity: [0.2, 0.6, 0.4, 0.7, 0.2],
+                            rotate: [0, 180, 360],
+                          }}
+                          transition={{
+                            duration: 4,
+                            repeat: Number.POSITIVE_INFINITY,
+                            ease: "easeInOut",
+                          }}
+                        />
+
+                        {/* Rotating Ring */}
+                        <motion.div
+                          className={`absolute inset-0 border-2 border-${colorTheme}-300 rounded-full opacity-0 group-hover:opacity-40`}
+                          animate={{
+                            rotate: [0, 360],
+                            scale: [1, 1.2, 1],
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Number.POSITIVE_INFINITY,
+                            ease: "linear",
+                          }}
+                        />
+                      </motion.div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex gap-3">
-                      <AnimatedButton
-                        variant="primary"
-                        size="md"
-                        className={`flex-1 bg-gradient-to-r from-${colors.primary} to-${colors.secondary} hover:from-${colors.secondary} hover:to-${colors.primary} text-white rounded-full`}
+                    {/* Enhanced Product Info */}
+                    <div className={`p-6 relative z-10 ${viewMode === "list" ? "w-2/3" : ""}`}>
+                      <motion.div
+                        className="flex items-center gap-2 mb-2"
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 + 0.4 }}
                       >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        Add to Cart
-                      </AnimatedButton>
-                    </div>
-                  </div>
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ scale: 0, rotate: -180 }}
+                              whileInView={{ scale: 1, rotate: 0 }}
+                              transition={{
+                                delay: index * 0.1 + 0.5 + i * 0.1,
+                                type: "spring",
+                                stiffness: 200,
+                              }}
+                            >
+                              <Star
+                                className={`w-4 h-4 ${
+                                  i < Math.floor(product.rating)
+                                    ? `text-${colorTheme}-400 fill-current`
+                                    : "text-gray-300"
+                                } transition-colors duration-300`}
+                              />
+                            </motion.div>
+                          ))}
+                        </div>
+                        <span className="text-sm text-gray-500">({product.reviews})</span>
+                      </motion.div>
 
-                  {/* Hover Overlay */}
-                </motion.div>
-              ))}
+                      <motion.h3
+                        className={`text-xl font-bold text-gray-800 mb-2 group-hover:text-${colorTheme}-600 transition-all duration-300`}
+                        whileHover={{ scale: 1.05 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 + 0.6 }}
+                      >
+                        {product.title}
+                      </motion.h3>
+
+                      <motion.p
+                        className="text-sm text-gray-600 mb-4"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ delay: index * 0.1 + 0.7 }}
+                      >
+                        {product.flavor} • 400ml
+                      </motion.p>
+
+                      <motion.div
+                        className="flex items-center gap-2 mb-6"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.1 + 0.8, type: "spring" }}
+                      >
+                        <motion.span
+                          className={`text-2xl font-black text-${colorTheme}-600`}
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          {product.price}
+                        </motion.span>
+                        <span className="text-lg text-gray-400 line-through">{product.originalPrice}</span>
+                        <motion.span
+                          className={`text-sm bg-${colorTheme}-100 text-${colorTheme}-700 px-2 py-1 rounded-full font-semibold`}
+                          animate={{
+                            scale: [1, 1.05, 1],
+                          }}
+                          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                        >
+                          17% OFF
+                        </motion.span>
+                      </motion.div>
+
+                      {/* Enhanced Action Buttons */}
+                      <motion.div
+                        className="flex gap-3"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 + 0.9 }}
+                      >
+                        <motion.button
+                          className={`flex-1 bg-gradient-to-r from-${colorTheme}-500 to-${colorTheme}-600 hover:from-${colorTheme}-600 hover:to-${colorTheme}-700 text-white rounded-full px-6 py-3 font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300`}
+                          whileHover={{
+                            scale: 1.05,
+                            boxShadow: `0 15px 30px rgba(var(--${colorTheme}-500), 0.4)`,
+                          }}
+                          whileTap={{ scale: 0.95 }}
+                          animate={{
+                            boxShadow: [
+                              `0 5px 15px rgba(var(--${colorTheme}-500), 0.2)`,
+                              `0 8px 25px rgba(var(--${colorTheme}-500), 0.3)`,
+                              `0 5px 15px rgba(var(--${colorTheme}-500), 0.2)`,
+                            ],
+                          }}
+                          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                        >
+                          <motion.div
+                            animate={{ rotate: [0, 360] }}
+                            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                          >
+                            <ShoppingCart className="w-4 h-4" />
+                          </motion.div>
+                          Add to Cart
+                        </motion.button>
+                      </motion.div>
+                    </div>
+
+                    {/* Corner Accent */}
+                    <motion.div
+                      className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-${colorTheme}-200 to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-500`}
+                      style={{
+                        clipPath: "polygon(100% 0%, 0% 0%, 100% 100%)",
+                      }}
+                      animate={{
+                        background: [
+                          `linear-gradient(to bottom left, rgb(var(--${colorTheme}-200)), transparent)`,
+                          `linear-gradient(to bottom left, rgb(var(--${colorTheme}-300)), transparent)`,
+                          `linear-gradient(to bottom left, rgb(var(--${colorTheme}-200)), transparent)`,
+                        ],
+                      }}
+                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+                    />
+                  </motion.div>
+                )
+              })}
             </motion.div>
           </AnimatePresence>
 
