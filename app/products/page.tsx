@@ -314,7 +314,7 @@ export default function ProductsPage() {
               {sortedProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  className={`group relative bg-gray-900/40 backdrop-blur-md border border-${product.colorTheme}-500/10 rounded-3xl overflow-hidden transition-all duration-700 ${
+                  className={`group relative bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-700 ${
                     viewMode === "list" ? "flex items-center" : ""
                   }`}
                   initial={{ opacity: 0, y: 50 }}
@@ -324,14 +324,12 @@ export default function ProductsPage() {
                   whileHover={{
                     y: -15,
                     scale: 1.03,
-                    borderColor: `rgba(${product.colorTheme === "amber" ? "245, 158, 11" : product.colorTheme === "emerald" ? "16, 185, 129" : "99, 102, 241"}, 0.5)`,
                     boxShadow: `0 25px 50px -12px rgba(${product.colorTheme === "amber" ? "245, 158, 11" : product.colorTheme === "emerald" ? "16, 185, 129" : "99, 102, 241"}, 0.25)`,
-                    backgroundColor: `rgba(${product.colorTheme === "amber" ? "245, 158, 11" : product.colorTheme === "emerald" ? "16, 185, 129" : "99, 102, 241"}, 0.1)`,
                   }}
                 >
                   {/* Animated Background Glow */}
                   <motion.div
-                    className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-10 transition-all duration-700`}
+                    className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-5 transition-all duration-700`}
                     initial={false}
                     whileHover={{
                       background: [
@@ -370,16 +368,16 @@ export default function ProductsPage() {
 
                   {/* Wishlist Button */}
                   <motion.button
-                    className={`absolute ${!product.inStock ? "top-12" : "top-4"} right-4 z-10 p-3 bg-white/5 backdrop-blur-md rounded-full border border-white/10 transition-all duration-500`}
+                    className={`absolute ${!product.inStock ? "top-12" : "top-4"} right-4 z-10 p-3 bg-gray-100 rounded-full border border-gray-200 transition-all duration-500 hover:bg-gray-200`}
                     whileHover={{
                       scale: 1.15,
-                      backgroundColor: `rgba(${product.colorTheme === "amber" ? "245, 158, 11" : product.colorTheme === "emerald" ? "16, 185, 129" : "99, 102, 241"}, 0.2)`,
-                      borderColor: `rgba(${product.colorTheme === "amber" ? "245, 158, 11" : product.colorTheme === "emerald" ? "16, 185, 129" : "99, 102, 241"}, 0.5)`,
+                      backgroundColor: `rgba(${product.colorTheme === "amber" ? "245, 158, 11" : product.colorTheme === "emerald" ? "16, 185, 129" : "99, 102, 241"}, 0.1)`,
+                      borderColor: `rgba(${product.colorTheme === "amber" ? "245, 158, 11" : product.colorTheme === "emerald" ? "16, 185, 129" : "99, 102, 241"}, 0.3)`,
                     }}
                     whileTap={{ scale: 0.9 }}
                   >
                     <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }}>
-                      <Heart className="w-5 h-5 text-white" />
+                      <Heart className="w-5 h-5 text-gray-600" />
                     </motion.div>
                   </motion.button>
 
@@ -432,15 +430,15 @@ export default function ProductsPage() {
 
                       {/* Enhanced Glow Effect */}
                       <motion.div
-                        className={`absolute inset-0 bg-gradient-to-b ${product.gradient} blur-xl opacity-20 -z-10`}
+                        className={`absolute inset-0 bg-gradient-to-b ${product.gradient} blur-xl opacity-10 -z-10`}
                         animate={{
                           scale: [1, 1.3, 1],
-                          opacity: [0.2, 0.4, 0.2],
+                          opacity: [0.1, 0.2, 0.1],
                         }}
                         transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
                         whileHover={{
                           scale: [1.3, 1.5, 1.3],
-                          opacity: [0.4, 0.6, 0.4],
+                          opacity: [0.2, 0.3, 0.2],
                         }}
                       />
 
@@ -475,18 +473,18 @@ export default function ProductsPage() {
                           >
                             <Star
                               className={`w-4 h-4 ${
-                                i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-white/20"
+                                i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
                               }`}
                             />
                           </motion.div>
                         ))}
                       </div>
-                      <span className="text-sm text-white/60">({product.reviews})</span>
+                      <span className="text-sm text-gray-500">({product.reviews})</span>
                     </motion.div>
 
                     {/* Title */}
                     <motion.h3
-                      className={`text-xl font-bold text-white mb-2 transition-all duration-500 group-hover:text-${product.colorTheme}-400`}
+                      className={`text-xl font-bold text-gray-800 mb-2 transition-all duration-500 group-hover:text-${product.colorTheme}-600`}
                       whileHover={{ scale: 1.02 }}
                     >
                       {product.title}
@@ -494,7 +492,7 @@ export default function ProductsPage() {
 
                     {/* Flavor & Description */}
                     <motion.p
-                      className="text-sm text-white/60 mb-2 font-medium"
+                      className="text-sm text-gray-600 mb-2 font-medium"
                       initial={{ opacity: 0 }}
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
@@ -504,7 +502,7 @@ export default function ProductsPage() {
                     </motion.p>
 
                     <motion.p
-                      className="text-sm text-white/50 mb-4 leading-relaxed"
+                      className="text-sm text-gray-500 mb-4 leading-relaxed"
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
@@ -520,14 +518,14 @@ export default function ProductsPage() {
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       <motion.span
-                        className={`text-2xl font-black text-${product.colorTheme}-400`}
+                        className={`text-2xl font-black text-${product.colorTheme}-600`}
                         whileHover={{ scale: 1.1 }}
                       >
                         {product.price}
                       </motion.span>
-                      <span className="text-lg text-white/40 line-through">{product.originalPrice}</span>
+                      <span className="text-lg text-gray-400 line-through">{product.originalPrice}</span>
                       <motion.span
-                        className={`text-sm bg-${product.colorTheme}-500/20 text-${product.colorTheme}-400 px-3 py-1 rounded-full font-bold border border-${product.colorTheme}-500/30`}
+                        className={`text-sm bg-${product.colorTheme}-100 text-${product.colorTheme}-700 px-3 py-1 rounded-full font-bold border border-${product.colorTheme}-200`}
                         whileHover={{ scale: 1.1, y: -2 }}
                         initial={{ scale: 0 }}
                         whileInView={{ scale: 1 }}
@@ -554,7 +552,7 @@ export default function ProductsPage() {
                     >
                       <Link href={`/product/${product.id}`} className="flex-1">
                         <motion.button
-                          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full border-2 border-white/10 text-white font-medium transition-all duration-500 hover:bg-white/5 hover:border-white/30"
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full border-2 border-gray-200 text-gray-700 font-medium transition-all duration-500 hover:bg-gray-50 hover:border-gray-300"
                           whileHover={{ scale: 1.02, y: -2 }}
                           whileTap={{ scale: 0.98 }}
                         >
@@ -567,7 +565,7 @@ export default function ProductsPage() {
                         className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full font-bold transition-all duration-500 ${
                           product.inStock
                             ? `bg-gradient-to-r ${product.gradient} text-white shadow-lg hover:shadow-xl hover:scale-105`
-                            : "bg-gray-500 text-gray-300 cursor-not-allowed"
+                            : "bg-gray-400 text-gray-200 cursor-not-allowed"
                         }`}
                         whileHover={product.inStock ? { scale: 1.05, y: -2 } : {}}
                         whileTap={product.inStock ? { scale: 0.95 } : {}}
@@ -580,25 +578,9 @@ export default function ProductsPage() {
                     </motion.div>
                   </div>
 
-                  {/* Hover Overlay with Gradient Animation */}
-                  <motion.div
-                    className={`absolute inset-0 bg-gradient-to-t ${product.gradient} opacity-0 group-hover:opacity-5 transition-all duration-700 pointer-events-none`}
-                    initial={false}
-                    whileHover={{
-                      background: [
-                        `linear-gradient(0deg, var(--tw-gradient-stops))`,
-                        `linear-gradient(90deg, var(--tw-gradient-stops))`,
-                        `linear-gradient(180deg, var(--tw-gradient-stops))`,
-                        `linear-gradient(270deg, var(--tw-gradient-stops))`,
-                        `linear-gradient(360deg, var(--tw-gradient-stops))`,
-                      ],
-                    }}
-                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                  />
-
                   {/* Corner Accent */}
                   <motion.div
-                    className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${product.gradient} opacity-0 group-hover:opacity-20 transition-all duration-700`}
+                    className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${product.gradient} opacity-0 group-hover:opacity-10 transition-all duration-700`}
                     style={{ clipPath: "polygon(100% 0%, 0% 0%, 100% 100%)" }}
                   />
                 </motion.div>

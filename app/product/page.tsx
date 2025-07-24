@@ -257,7 +257,7 @@ export default function ProductsPage() {
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  className={`group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden hover:border-white/30 transition-all duration-500 ${
+                  className={`group relative bg-white border border-gray-200 rounded-3xl overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-500 ${
                     viewMode === "list" ? "flex items-center" : ""
                   }`}
                   initial={{ opacity: 0, y: 50 }}
@@ -279,11 +279,11 @@ export default function ProductsPage() {
 
                   {/* Wishlist Button */}
                   <motion.button
-                    className="absolute top-4 right-4 z-10 p-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/20 transition-colors"
+                    className="absolute top-4 right-4 z-10 p-2 bg-gray-100 rounded-full border border-gray-200 hover:bg-gray-200 transition-colors"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <Heart className="w-5 h-5 text-white" />
+                    <Heart className="w-5 h-5 text-gray-600" />
                   </motion.button>
 
                   {/* Product Image */}
@@ -319,21 +319,21 @@ export default function ProductsPage() {
                           <Star
                             key={i}
                             className={`w-4 h-4 ${
-                              i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-white/20"
+                              i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-white/60">({product.reviews})</span>
+                      <span className="text-sm text-gray-500">({product.reviews})</span>
                     </div>
 
                     <h3
-                      className={`text-xl font-bold text-white mb-2 group-hover:text-${colors.primary} transition-colors`}
+                      className={`text-xl font-bold text-gray-800 mb-2 group-hover:text-${colors.primary} transition-colors`}
                     >
                       {product.title}
                     </h3>
 
-                    <p className="text-sm text-white/60 mb-4">{product.flavor} • 400ml</p>
+                    <p className="text-sm text-gray-600 mb-4">{product.flavor} • 400ml</p>
 
                     <div className="flex items-center gap-2 mb-6">
                       <span className={`text-2xl font-black text-${colors.secondary}`}>{product.price}</span>
@@ -359,10 +359,6 @@ export default function ProductsPage() {
                   </div>
 
                   {/* Hover Overlay */}
-                  <motion.div
-                    className={`absolute inset-0 bg-gradient-to-t from-${colors.primary}/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}
-                    initial={false}
-                  />
                 </motion.div>
               ))}
             </motion.div>
