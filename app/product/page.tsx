@@ -18,7 +18,7 @@ const products = [
   {
     id: 1,
     title: "FOKUS Kiwi Lemon",
-    price: "₹150",
+    price: "₹200",
     originalPrice: "₹180",
     category: "energy",
     gradient: `from-${colors.secondary}-400 to-${colors.secondary}-600`,
